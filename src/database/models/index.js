@@ -1,4 +1,4 @@
-// Models
+// all Models
 require('./User');
 require('./Post');
 require('./Comment');

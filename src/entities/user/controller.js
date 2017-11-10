@@ -23,14 +23,7 @@ export const getUser = ({ _id }) => {
   });
 }
 
-export const deleteUser = ({ _id }) => {
-  return new Promise((resolve, reject) => {
-    User.remove({ _id }, (err) => {
-      if(err) return reject(500);
-      return resolve();
-    });
-  });
-};
+
 
 export const createUser = ({Name, Email , Password, About}) => {
      
