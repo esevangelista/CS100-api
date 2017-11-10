@@ -24,35 +24,28 @@ export const getUser = ({ _id }) => {
     });
   });
 }
-/*
-const encrypt = (Password) => {
-  bcrypt.genSalt(10, function(err, salt) {
-    bcrypt.hash(Password, salt, function(err, hash) {
-      console.log(hash);
-      return hash.toString();
-    })
-  })
-}*/
+
+const salt = bcrypt.genSaltSync(10);
+
 
 export const createUser = ({Name, Email , Password, About}) => {
-    
- 
    return new Promise((resolve, reject) => {
-
-     
-    const user = {
+    bcrypt.hash(Password, salt, function(err, hash) {
+      const user = {
         Name: Name,
         Email: Email,
         About: About,
-        Password: Password    
-    }
+        Password: hash
+      }  
+      const newUser = new User(user);
+      newUser.save((err, results) => {
+         if(err) return reject(500);
+         else return resolve(results._id);
+      });
 
-    console.log(user);
-    const newUser = new User(user);
-    newUser.save((err, results) => {
-       if(err) return reject(500);
-       else return resolve(results._id);
-     });
+
+    })
+  
   });
 }
 
