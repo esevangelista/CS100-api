@@ -1,4 +1,4 @@
-<h2 align="center">CMSC 100 Project </h2>
+<h1 align="center">CMSC 100 Project </h1>
 </br>
 <h4 align="center">A social media app that lets users sign up, create a profile, post, comment, and add other users as friends
 </h4>
