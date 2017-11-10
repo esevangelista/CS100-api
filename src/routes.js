@@ -3,7 +3,6 @@ import { Router } from 'express';
 import session from 'express-session';
 import userRouter from './entities/user/router';
 
-
 const router = Router();
 
 

@@ -1,6 +1,8 @@
 import db from './../../database/index';
 import mongoose from 'mongoose';
 import model from './../../database/models/index';
+import bcrypt from 'bcryptjs';
+
 const User = mongoose.model('User');
 
 export const getAllUsers = () => {
@@ -22,20 +24,30 @@ export const getUser = ({ _id }) => {
     });
   });
 }
-
-
+/*
+const encrypt = (Password) => {
+  bcrypt.genSalt(10, function(err, salt) {
+    bcrypt.hash(Password, salt, function(err, hash) {
+      console.log(hash);
+      return hash.toString();
+    })
+  })
+}*/
 
 export const createUser = ({Name, Email , Password, About}) => {
-     
-   return new Promise((resolve, reject) => {
     
+ 
+   return new Promise((resolve, reject) => {
+
+     
     const user = {
         Name: Name,
         Email: Email,
-        Password: Password,
-        About: About
+        About: About,
+        Password: Password    
     }
 
+    console.log(user);
     const newUser = new User(user);
     newUser.save((err, results) => {
        if(err) return reject(500);
