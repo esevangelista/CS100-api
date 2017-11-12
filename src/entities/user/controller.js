@@ -48,7 +48,7 @@ export const checkEmail = ( Email ) => {
 
 
 export const createUser = ({Name, Email , Password, About}) => {
-   return new Promise((resolve, reject) => {
+  return new Promise((resolve, reject) => {
     bcrypt.hash(Password, salt, function(err, hash) {
       const user = {
         Name: Name,
@@ -65,5 +65,24 @@ export const createUser = ({Name, Email , Password, About}) => {
   });
 }
 
+
+
+export const updateUser = ({ _id },{ Name, Email, Password, About}) => {
+  return new Promise((resolve, reject) => {
+    bcrypt.hash(Password, salt, function(err, hash) {
+      const user = {
+        Name: Name,
+        Email: Email,
+        About: About,
+        Password: hash
+      }  
+      const newUser = new User(user);
+      User.update({ _id },user,(err, results) => {
+          if(err) return reject(500);
+          else return resolve();
+      });
+    })  
+  });
+}
 
 
