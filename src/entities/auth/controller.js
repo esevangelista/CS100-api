@@ -11,7 +11,7 @@ export const login = ({Email, Password}) => {
       if(err) return reject(500);
       bcrypt.compare(Password, result.Password, (error, isMatch) =>{
           if(error) return reject(500);
-          else if (!isMatch) return reject(404);
+          else if (!isMatch) return reject(422);
           return resolve(result._id);
       });
       

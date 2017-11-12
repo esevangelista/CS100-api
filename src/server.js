@@ -14,6 +14,14 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(logger('dev'));
 
+/* for express-session */
+app.use(
+  session({
+    secret: 'cs100',
+    resave: true,
+    saveUninitialized: true
+  })
+);
 
 app.use('/api', routes);
 
