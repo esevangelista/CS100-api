@@ -26,6 +26,16 @@ export const getUser = ({ _id }) => {
   });
 }
 
+export const deleteUser = ({ _id }) => {   
+  return new Promise((resolve, reject) => {   
+    User.remove({ _id }, (err) => {   
+      if(err) return reject(500);   
+      return resolve();   
+    });   
+  });   
+};
+
+
 export const checkEmail = ( Email ) => {
   return new Promise((resolve, reject) =>{
     User.find({ "Email" : Email }, (err, result) => {

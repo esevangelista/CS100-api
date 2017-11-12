@@ -30,7 +30,7 @@ router.get('/user', async (req,res) => {
 router.delete('/user/:_id', async (req, res) => {
 
   try {
-    await Ctrl.deleteUser();
+    await Ctrl.deleteUser(req.params);
     res.status(200).json({
       status: 200,
       message: 'Successfully deleted user'
@@ -52,7 +52,7 @@ router.delete('/user/:_id', async (req, res) => {
 //get user 
 router.get('/user/:_id', async (req, res) => {
   try {
-    const user = await Ctrl.getUser(req.params._id);
+    const user = await Ctrl.getUser(req.params);
     res.status(200).json({
       status: 200,
       message: 'Successfully fetched user',
