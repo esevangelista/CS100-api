@@ -2,6 +2,7 @@
 import { Router } from 'express';
 import session from 'express-session';
 import userRouter from './entities/user/router';
+import authRouter from './entities/auth/router';
 
 const router = Router();
 
@@ -17,7 +18,7 @@ router.use(
 
 
 router.use(userRouter);
-
+router.use(authRouter);
 
 router.get('/', function(req, res) {
   res.json({message: ' access http://localhost:3001/api/<route>'});
