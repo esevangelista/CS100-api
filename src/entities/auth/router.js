@@ -30,7 +30,7 @@ router.post('/login', async (req, res) => {
 });
 
 router.post('/logout', (req, res) => {
-  req.session.user = null;
+  req.session.destroy();
   res.status(200).json({
     status: 200,
     message: 'Successfully logged out'

@@ -27,7 +27,6 @@ export const uploadPhoto = (Email, Folder, Image ) => {
       imgurl : imgurl,
       Path : Path
     };
-    console.log(file);
 
     Image.mv(Path,(err) =>{
       if(err) return null;
