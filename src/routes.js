@@ -10,6 +10,7 @@ const router = Router();
 router.use(authRouter);
 router.use(signupRouter);
 
+
 router.use((req, res, next) => {
   if (req.session.user) {
     return next();

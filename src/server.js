@@ -5,13 +5,13 @@ import logger from 'morgan';
 import session from 'express-session';
 import routes from './routes';
 import DB from './database/index';
-
+import path from 'path';
 const app = express();
 const port = process.env.PORT || 3001;
 
 // body parsing
 app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.urlencoded({ extended: true }));
 app.use(logger('dev'));
 
 /* for express-session */
@@ -24,6 +24,7 @@ app.use(
 );
 
 app.use('/api', routes);
+app.use('/profile-picture',express.static(path.join(__dirname, './entities/signup/profile_photos')));
 
 const server = app.listen(port, (err) => {
   if (err) console.log(err);

@@ -6,6 +6,8 @@ const UserSchema = new Schema({
   Email: { type: String, default: '' },
   Password: { type: String, default: '' },
   About: { type: String, default: '' },
+  ImageUrl: {type: String, default: ''},
+  ImagePath: {type: String, default: ''},
   Friends: { type: Array, default: [] },
   Requests: { type: Array, default: [] }
 });
