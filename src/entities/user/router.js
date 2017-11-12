@@ -4,7 +4,7 @@ import  * as Ctrl from './controller';
 const router = Router();
 
 //get all users
-router.get('/', async (req,res) => {
+router.get('/user', async (req,res) => {
   try {
     const users = await Ctrl.getAllUsers();
     res.status(200).json({
@@ -19,11 +19,16 @@ router.get('/', async (req,res) => {
         message = 'Internal server error';
         break;
       case 404:
-        message = 'Not Found';
+        message = 'Users not Found';
         break;
     }
     res.status(status).json({ status, message });
   }
+});
+
+
+router.delete('/user/:_id', async (req, res) => {
+
   try {
     await Ctrl.deleteUser();
     res.status(200).json({
@@ -43,8 +48,9 @@ router.get('/', async (req,res) => {
     res.status(status).json({ status, message });
   }
 });
+
 //get user 
-router.get('/:_id', async (req, res) => {
+router.get('/user/:_id', async (req, res) => {
   try {
     const user = await Ctrl.getUser(req.params._id);
     res.status(200).json({
@@ -67,11 +73,11 @@ router.get('/:_id', async (req, res) => {
 });
 
 // create account
-router.post('/', async (req, res) => {
+router.post('/user', async (req, res) => {
   try{
+    await Ctrl.checkEmail(req.body.Email);
     const _id = await Ctrl.createUser(req.body);
     const user = await Ctrl.getUser({ _id });
-    console.log(user);
     res.status(200).json({
        status: 200,
        message: 'Successfully created user',
@@ -80,6 +86,10 @@ router.post('/', async (req, res) => {
   } catch (status) {
     let message = '';
     switch (status) {
+      case 409:
+        message = 'Conflict';
+        break;
+
       case 500:
         message = 'Internal server error';
         break;

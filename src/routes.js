@@ -16,11 +16,11 @@ router.use(
 );
 
 
-router.use('/users',userRouter);
+router.use(userRouter);
 
 
 router.get('/', function(req, res) {
   res.json({message: ' access http://localhost:3001/api/<route>'});
 });
 
-module.exports = router;
+export default router
