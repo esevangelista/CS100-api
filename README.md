@@ -15,8 +15,8 @@
 2. Access the api through `http://localhost:3001/api/<route>`.
 
 ## Developers
+* Basilio, Jefferson Louise
 * Evangelista, Erlen Mae
 * Roxas, Harold James
 * Sunga, Jasper
-* Basilio, Jefferson Louise
 
