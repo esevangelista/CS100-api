@@ -2,6 +2,9 @@ import db from './../../database/index';
 import mongoose from 'mongoose';
 import model from './../../database/models/index';
 import bcrypt from 'bcryptjs';
+import * as Util from './../signup/controller';
+import fs from 'fs';
+
 
 const User = mongoose.model('User');
 const salt = bcrypt.genSaltSync(10);
@@ -36,16 +39,28 @@ export const deleteUser = ({ _id }) => {
 };
 
 
+export const unlinkImage = ({ _id}) => {
 
-export const updateUser = ({ _id },{ Name, Email, Password, About}) => {
-  return new Promise((resolve, reject) => {
+  User.findOne({_id}, (err,results) => {
+    if(err) console.log('unable to delete image')
+    fs.unlink(JSON.parse((JSON.stringify(results.ImagePath))));
+  });  
+
+};
+
+export const updateUser = ({ _id },{ Name, Email, Password, About}, {Image}) => {
+  return new Promise((resolve, reject) => {  
+    unlinkImage({_id});
+    const file = Util.uploadPhoto(Email, '/profile-picture/', Image);
     bcrypt.hash(Password, salt, function(err, hash) {
-      const user = {
+       const user = {
         Name: Name,
         Email: Email,
         About: About,
-        Password: hash
-      }  
+        Password: hash,
+        ImageUrl : file.imgurl,
+        ImagePath : file.Path
+      }
       const newUser = new User(user);
       User.update({ _id },user,(err, results) => {
           if(err) return reject(500);

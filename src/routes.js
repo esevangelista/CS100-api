@@ -11,16 +11,16 @@ router.use(authRouter);
 router.use(signupRouter);
 
 
-router.use((req, res, next) => {
-  if (req.session.user) {
-    return next();
-  }
+// router.use((req, res, next) => {
+//   if (req.session.user) {
+//     return next();
+//   }
 
-  res.status(401).json({
-    status: 401,
-    message: 'Must be logged in'
-  });
-});
+//   res.status(401).json({
+//     status: 401,
+//     message: 'Must be logged in'
+//   });
+// });
 
 
 router.use(userRouter);
