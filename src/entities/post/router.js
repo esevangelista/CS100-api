@@ -9,14 +9,102 @@ const router = Router();
 
 router.use(fileupload()); // express-fileupload
 
+router.get('/post', async (req,res) => {
+  try {
+    const posts = await Ctrl.getAllPost();
+    res.status(200).json({
+      status: 200,
+      message: 'Successfully fetched posts',
+      data: posts
+    });
+  } catch (status) {
+    let message = '';
+    switch (status) {
+      case 500:
+        message = 'Internal server error';
+        break;
+      case 404:
+        message = 'Posts not Found';
+        break;
+    }
+    res.status(status).json({ status, message });
+  }
+});
+
+router.get('/post/:Cid', async (req, res) => {
+  try {
+    const posts = await Ctrl.getAllPostofUser(req.params);
+    res.status(200).json({
+      status: 200,
+      message: 'Successfully fetched posts of user',
+      data: posts
+    });
+  } catch (status) {
+    let message = '';
+    switch (status) {
+      case 404:
+        message = 'Posts not found';
+        break;
+      case 500:
+        message = 'Internal server error';
+        break;
+    }
+    res.status(status).json({ status, message });
+  }
+});
+
+router.get('/post/:Cid/:_id', async (req, res) => {
+  try {
+    const post = await Ctrl.getPostofUser(req.params);
+    res.status(200).json({
+      status: 200,
+      message: 'Successfully fetched post',
+      data: post
+    });
+  } catch (status) {
+    let message = '';
+    switch (status) {
+      case 404:
+        message = 'Post not found';
+        break;
+      case 500:
+        message = 'Internal server error';
+        break;
+    }
+    res.status(status).json({ status, message });
+  }
+});
+
+router.delete('/post/:_id', async (req, res) => {
+
+  try {
+    //Ctrl.unlinkImage(req.params);
+    await Ctrl.deletePost(req.params);
+    res.status(200).json({
+      status: 200,
+      message: 'Successfully deleted post'
+    });
+  } catch (status) {
+    let message = '';
+    switch (status) {
+      case 404:
+        message = 'Post not found';
+        break;
+      case 500:
+        message = 'Internal server error';
+        break;
+    }
+    res.status(status).json({ status, message });
+  }
+});
 
 router.post('/post', async (req, res) => {
   try{
 
     var _id;
     req.body.uuid = shortid.generate();
-
-    if (req.files)req.body.imgurl = await Ctrl.attachImage(req.body.uuid,'/images/',req.files);
+    console.log(req.file)
+    if (req.files) req.body.imgurl = await Ctrl.attachImage(req.body.uuid,'/images/',req.files);
     
     const _id = await Ctrl.createPost(req.session.user._id,req.body);
     const post = await Ctrl.getPost({ _id });
