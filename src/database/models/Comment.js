@@ -6,7 +6,7 @@ const commentSchema = new Schema({
   author: { type: String, defualt: '' },
   content: { type: String, default: '' },
   timestamp: { type: Date, default: Date.now},
-  likeCount: { type: Number, default: '' },
+  likeCount: { type: Number, default: '' }
 
 });
 

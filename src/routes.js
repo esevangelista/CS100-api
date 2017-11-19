@@ -5,6 +5,7 @@ import userRouter from './entities/user/router';
 import authRouter from './entities/auth/router';
 import signupRouter from './entities/signup/router';
 import postRouter from './entities/post/router';
+import commentRouter from './entities/comment/router';
 const router = Router();
 
 
@@ -26,6 +27,7 @@ router.use(signupRouter);
 
 router.use(userRouter);
 router.use(postRouter);
+router.use(commentRouter);
 
 router.get('/', function(req, res) {
   res.json({message: ' access http://localhost:3001/api/<route>'});

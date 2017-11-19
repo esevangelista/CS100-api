@@ -8,7 +8,7 @@ const postSchema = new Schema({
   timestamp: { type: Date, default: Date.now },
   comments: { type: Array, default: [] },
   likeCount: { type: Number, default: '' },
-
+  imageUrl: {type: String, default:''}
 });
 
 
