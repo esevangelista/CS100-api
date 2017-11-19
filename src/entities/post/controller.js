@@ -2,6 +2,7 @@ import db from './../../database/index';
 import mongoose from 'mongoose';
 import model from './../../database/models/index';
 import fs from 'fs';
+import mv from 'mv';
 
 const Post = mongoose.model('Post');
 
@@ -19,7 +20,7 @@ export const getAllPost = () => {
 
 export const getAllPostofUser = ({ _id }) => {
   return new Promise((resolve, reject) => {
-    Post.find({ "Author" : _id }, (err,results) => {
+    Post.find({ "author" : _id }, (err,results) => {
       if(err) return reject(500);
       else if(results.length === 0) return reject(404);
       else return resolve(results);
@@ -29,7 +30,16 @@ export const getAllPostofUser = ({ _id }) => {
 
 export const getPostofUser = ({ Cid , _id}) => {
   return new Promise((resolve, reject) => {
-    Post.findOne({ "Author" : Cid , "_id" : _id }, (err,result) => {
+    Post.findOne({ "author" : Cid , "_id" : _id }, (err,result) => {
+      if(err) return reject(500);
+      else return resolve(result);
+    });
+  });
+}
+
+export const getPost = ({_id}) => {
+  return new Promise((resolve, reject) => {
+    Post.findOne({ _id }, (err,result) => {
       if(err) return reject(500);
       else return resolve(result);
     });
@@ -52,14 +62,32 @@ export const unlinkImage = ({ _id}) => {
   });  
 };
 
-export const createPost = ({ Author },{Content}) => {
+
+
+export const attachImage = (filename,folder, {image} ) => {
+  return new Promise((resolve, reject) =>{
+    if({image} === null) return resolve(null);
+    const imgurl = folder + filename +'.jpg';
+    const Path = __dirname + imgurl;
+    image.mv(Path,(err) =>{
+      if(err) return resolve(null);
+      return resolve(imgurl);
+
+    });
+  })
+}
+
+
+export const createPost = (author,{ uuid, content, imgurl}) => {
   return new Promise((resolve, reject) => {
     const post = {
-      Author: Author,
-      Content: Content,
-      Timestamp: new Date(),
-      LikeCount: 0,
-      Comments: []
+      uuid: uuid,
+      author: author,
+      content: content,
+      timestamp: new Date(),
+      likeCount: 0,
+      comments: [],
+      imageUrl: imgurl
     }
 
     const newPost = new Post(post);
@@ -68,5 +96,5 @@ export const createPost = ({ Author },{Content}) => {
       else return resolve(results._id);
     });
   })  
-}
+};
 

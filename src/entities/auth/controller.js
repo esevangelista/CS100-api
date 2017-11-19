@@ -10,7 +10,6 @@ export const login = ({email, password}) => {
   return new Promise((resolve, reject) => {
 
     User.findOne({email}, (err,result) => {
-      console.log(err);
       if(err) return reject(500);
       else if(!result) return reject(422);
       bcrypt.compare(password, result.password, (error, isMatch) =>{
