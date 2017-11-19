@@ -3,6 +3,7 @@ import  * as Ctrl from './controller';
 import * as Util from './../user/controller';
 import fileupload from 'express-fileupload';
 import shortid from 'shortid';
+
 const router = Router();
 
 router.use(fileupload()); // express-fileupload
