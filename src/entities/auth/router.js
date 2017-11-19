@@ -2,7 +2,6 @@ import { Router } from 'express';
 import  * as Ctrl from './controller';
 import * as Util from './../user/controller';
 
-
 const router = Router();
 
 router.post('/login', async (req, res) => {

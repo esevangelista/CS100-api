@@ -18,7 +18,7 @@ export const checkEmail = ( Email ) => {
   });
 }
 
-export const uploadPhoto = (Email, Folder, Image ) => {
+export const uploadPhoto = ({Email}, Folder, {Image} ) => {
 
     const filename = Email + '-' + Image.name;
     const imgurl = Folder + filename;
@@ -35,8 +35,7 @@ export const uploadPhoto = (Email, Folder, Image ) => {
 }
 
 export const createUser = ({Name, Email , Password, About},{ Image }) => {
-  const file = uploadPhoto(Email, '/profile-picture/', Image);
-
+  const file = uploadPhoto({Email}, '/profile-picture/', {Image});
   return new Promise((resolve, reject) => {
 
     bcrypt.hash(Password, salt, function(err, hash) {  
