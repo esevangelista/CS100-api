@@ -10,7 +10,7 @@ router.use(fileupload()); // express-fileupload
 // create account
 router.post('/signup', async (req, res) => {
   try{
-    await Ctrl.checkEmail(req.body.Email);
+    await Ctrl.checkEmail(req.body.email);
     const _id = await Ctrl.createUser(req.body,req.files);
     const user = await Util.getUser({ _id });
     req.session.user = user;

@@ -8,9 +8,9 @@ const User = mongoose.model('User');
 const salt = bcrypt.genSaltSync(10);
 
 
-export const checkEmail = ( Email ) => {
+export const checkEmail = ( email ) => {
   return new Promise((resolve, reject) =>{
-    User.find({ "Email" : Email }, (err, result) => {
+    User.find({ email : email }, (err, result) => {
       if(err) return reject(500);
       else if (result.length !== 0 ) return reject(409);
       return resolve();
@@ -18,34 +18,34 @@ export const checkEmail = ( Email ) => {
   });
 }
 
-export const uploadPhoto = ({Email}, Folder, {Image} ) => {
+export const uploadPhoto = ({email}, folder, {image} ) => {
 
-    const filename = Email + '-' + Image.name;
-    const imgurl = Folder + filename;
-    const Path = __dirname + Folder+ filename ;
+    const filename = email + '-' + image.name;
+    const imgurl = folder + filename;
+    const Path = __dirname + folder + filename ;
     const file ={
       imgurl : imgurl,
       Path : Path
     };
 
-    Image.mv(Path,(err) =>{
+    image.mv(Path,(err) =>{
       if(err) return null;
     });
     return file;
 }
 
-export const createUser = ({Name, Email , Password, About},{ Image }) => {
-  const file = uploadPhoto({Email}, '/profile-picture/', {Image});
+export const createUser = ({ name, email , password, about},{ image }) => {
+  const file = uploadPhoto({ email }, '/profile-picture/', {image});
   return new Promise((resolve, reject) => {
 
-    bcrypt.hash(Password, salt, function(err, hash) {  
+    bcrypt.hash(password, salt, function(err, hash) {  
       const user = {
-        Name: Name,
-        Email: Email,
-        About: About,
-        Password: hash,
-        ImageUrl : file.imgurl,
-        ImagePath : file.Path
+        name: name,
+        email: email,
+        about: about,
+        password: hash,
+        imageUrl : file.imgurl,
+        imagePath : file.Path
       }
 
       const newUser = new User(user);

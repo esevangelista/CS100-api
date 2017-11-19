@@ -39,27 +39,27 @@ export const deleteUser = ({ _id }) => {
 };
 
 
-export const unlinkImage = ({ _id}) => {
+export const unlinkImage = ({ _id }) => {
 
   User.findOne({_id}, (err,results) => {
     if(err) console.log('unable to delete image')
-    fs.unlink(JSON.parse((JSON.stringify(results.ImagePath))));
+    fs.unlink(JSON.parse((JSON.stringify(results.imagePath))));
   });  
 
 };
 
-export const updateUser = ({ _id },{ Name, Email, Password, About}, {Image}) => {
+export const updateUser = ({ _id },{ name, email, password, about}, { image }) => {
   return new Promise((resolve, reject) => {  
     unlinkImage({_id});
-    const file = Util.uploadPhoto(Email, '/profile-picture/', Image);
-    bcrypt.hash(Password, salt, function(err, hash) {
+    const file = Util.uploadPhoto({email}, '/profile-picture/', {image});
+    bcrypt.hash(password, salt, function(err, hash) {
        const user = {
-        Name: Name,
-        Email: Email,
-        About: About,
-        Password: hash,
-        ImageUrl : file.imgurl,
-        ImagePath : file.Path
+        name: name,
+        email: email,
+        about: about,
+        password: hash,
+        imageUrl : file.imgurl,
+        imagePath : file.Path
       }
       const newUser = new User(user);
       User.update({ _id },user,(err, results) => {
