@@ -52,6 +52,34 @@ router.delete('/comment/:Pid/:_id', async (req, res) => {
   }
 });
 
+router.put('/comment/:Pid/:_id', async (req,res) => {
+    try{
+      const likes = (await Ctrl.getComment(req.params)).likeCount;
+      await Ctrl.checkAction(req.params,req.body);
+      await Ctrl.likeComment(req.params,req.body,likes);
+      const comment = await Ctrl.getComment(req.params);
+      res.status(200).json({
+         status: 200,
+         message: 'Successfully performed action on comment',
+         data: comment
+      });
+
+  } catch (status) {
+
+    let message = '';
+    switch (status) {
+      case 409:
+        message = 'Conflict';
+        break;
+      case 500:
+        message = 'Internal server error';
+        break;
+    }
+    res.status(status).json({ status, message});
+  }
+
+});
+
 
 router.post('/comment/:Pid', async (req, res) => {
   try{

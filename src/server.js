@@ -6,6 +6,7 @@ import session from 'express-session';
 import routes from './routes';
 import DB from './database/index';
 import path from 'path';
+import cookieParser from 'cookie-parser'
 const app = express();
 const port = process.env.PORT || 3001;
 
@@ -20,10 +21,10 @@ app.use(function(req, res, next) {
   res.setHeader('Access-Control-Allow-Credentials', 'true');
   res.setHeader('Access-Control-Allow-Methods', 'GET,HEAD,OPTIONS,POST,PUT,DELETE');
   res.setHeader('Access-Control-Allow-Headers', 'Access-Control-Allow-Headers, Origin,Accept, X-Requested-With, Content-Type, Access-Control-Request-Method, Access-Control-Request-Headers');
-
   res.setHeader('Cache-Control', 'no-cache');
   next();
 });
+app.use(cookieParser());
 
 /* for express-session */
 app.use(

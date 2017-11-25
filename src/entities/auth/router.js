@@ -29,7 +29,7 @@ router.post('/login', async (req, res) => {
 });
 
 router.post('/logout', (req, res) => {
-  req.session.destroy();
+  req.session.user = null;
   res.status(200).json({
     status: 200,
     message: 'Successfully logged out'
@@ -40,7 +40,7 @@ router.get('/session', (req, res) => {
   res.status(200).json({
     status: 200,
     message: 'Successfully fetched current session',
-    data: req.session.user ? req.session.user : null
+    data: req.session ? req.session.user : null
   });
 });
 
