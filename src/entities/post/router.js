@@ -51,6 +51,29 @@ router.get('/post/:Cid', async (req, res) => {
   }
 });
 
+router.get('/postCount', async (req, res) => {
+  try {
+    const _id = req.session.user._id;
+    const posts = await Ctrl.getAllPostofUser({_id});
+    res.status(200).json({
+      status: 200,
+      message: 'Successfully fetched number of posts user have',
+      data: posts.length
+    });
+  } catch (status) {
+    let message = '';
+    switch (status) {
+      case 404:
+        message = 'Posts not found';
+        break;
+      case 500:
+        message = 'Internal server error';
+        break;
+    }
+    res.status(status).json({ status, message });
+  }
+});
+
 router.get('/post/:Cid/:_id', async (req, res) => {
   try {
     const post = await Ctrl.getPostofUser(req.params);

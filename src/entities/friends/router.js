@@ -25,6 +25,30 @@ router.get('/friend/', async (req, res) => {
   }
 });
 
+router.get('/friendCount/',async (req,res) => {
+  try {
+    const _id = req.session.user._id
+    const friends = await Util.getUser(_id);
+
+    res.status(200).json({
+      status: 200,
+      message: 'Successfully fetched number of friends user has ',
+      data: friends.length
+    });
+  } catch (status) {
+    let message = '';
+    switch (status) {
+      case 404:
+        message = 'Friends not found';
+        break;
+      case 500:
+        message = 'Internal server error';
+        break;
+    }
+    res.status(status).json({ status, message });
+  }
+});
+
 router.get('/request/', async (req, res) => {
   try {
     const requestsFrom = req.session.user.requests;
@@ -146,5 +170,6 @@ router.delete('/reject/:_id', async (req, res) => {
     res.status(status).json({ status, message});
   }
 });
+
 
 export default router;

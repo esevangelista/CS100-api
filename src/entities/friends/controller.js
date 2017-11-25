@@ -56,6 +56,7 @@ export const rejectRequest = (self, {_id}) => {
     });  
   });
 };
+
 export const suggestUser = () => {
   return new Promise ((resolve,reject) =>{
     User.aggregate([{$sample : {size: 3}}], (err,result) =>{
