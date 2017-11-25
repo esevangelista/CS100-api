@@ -73,6 +73,35 @@ router.get('/post/:Cid/:_id', async (req, res) => {
   }
 });
 
+
+router.put('/post/:_id', async (req,res) => {
+    try{
+      const likes = (await Ctrl.getPost(req.params)).likeCount;
+      await Ctrl.checkAction(req.params,req.body);
+      await Ctrl.likePost(req.params,req.body,likes);
+      const post = await Ctrl.getPost(req.params);
+      res.status(200).json({
+         status: 200,
+         message: 'Successfully performed action on post',
+         data: post
+      });
+
+  } catch (status) {
+
+    let message = '';
+    switch (status) {
+      case 409:
+        message = 'Conflict';
+        break;
+      case 500:
+        message = 'Internal server error';
+        break;
+    }
+    res.status(status).json({ status, message});
+  }
+
+});
+
 router.delete('/post/:_id', async (req, res) => {
 
   try {

@@ -37,7 +37,6 @@ router.post('/logout', (req, res) => {
 });
 
 router.get('/session', (req, res) => {
-  console.log(req.session)
   res.status(200).json({
     status: 200,
     message: 'Successfully fetched current session',

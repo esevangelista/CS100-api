@@ -107,19 +107,17 @@ export const createPost = (author,{ uuid, content, imgurl}) => {
   })  
 };
 
-// export const likePost = ({ Pid },{ action },prevLikes) => {
-//   return new Promise((resolve,reject) => {
-//     const likes = action === 'LIKE'? prevLikes += 1 : prevLikes -= 1;
-//     Post.update( 
-//       { _id: Pid}},
-//       { $set : { "Post.likeCount": likes }},
-//       (err,result) => {
-//         console.log(result);
-//         if(err) return reject(500);
-//         action === 'LIKE'? likedComments.push(_id): likedComments.splice(likedComments.indexOf(_id),1);
-//         console.log(likedComments)
-//         return resolve();
+export const likePost = ({ _id },{ action },prevLikes) => {
+  return new Promise((resolve,reject) => {
+    const likes = action === 'LIKE'? prevLikes += 1 : prevLikes -= 1;
+    Post.update( 
+      { _id: _id},
+      { $set : { likeCount: likes }},
+      (err,result) => {
+        if(err) return reject(500);
+        action === 'LIKE'? likedPosts.push(_id): likedPosts.splice(likedPosts.indexOf(_id),1);
+        return resolve();
    
-//     });
-//   });
-// };
+    });
+  });
+};
