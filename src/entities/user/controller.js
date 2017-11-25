@@ -29,6 +29,17 @@ export const getUser = ({ _id }) => {
   });
 }
 
+export const searchUser = ({ name }) => {
+  return new Promise((resolve, reject) =>{
+    User.findOne({ name: name }, (err,result) => {
+      if(err) return reject(500);
+      else if (!result) return reject(404);
+      else return resolve(result);
+    });
+  });
+}
+
+
 export const deleteUser = ({ _id }) => {   
   return new Promise((resolve, reject) => {   
     User.remove({ _id }, (err) => {   

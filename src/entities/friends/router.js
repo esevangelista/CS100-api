@@ -47,6 +47,29 @@ router.get('/request/', async (req, res) => {
   }
 });
 
+router.get('/suggested/', async (req, res) => {
+  try {
+    const users = await Ctrl.suggestUser();
+    res.status(200).json({
+      status: 200,
+      message: 'Successfully fetched random users',
+      data: users
+    });
+  } catch (status) {
+    let message = '';
+    switch (status) {
+      case 404:
+        message = 'Not found';
+        break;
+      case 500:
+        message = 'Internal server error';
+        break;
+    }
+    res.status(status).json({ status, message });
+  }
+});
+
+
 router.put('/accept/:_id', async (req, res) => {
   try{
     const self = req.session.user._id;
