@@ -6,6 +6,8 @@ import authRouter from './entities/auth/router';
 import signupRouter from './entities/signup/router';
 import postRouter from './entities/post/router';
 import commentRouter from './entities/comment/router';
+import friendRouter from './entities/friends/router';
+
 const router = Router();
 
 
@@ -28,6 +30,7 @@ router.use(signupRouter);
 router.use(userRouter);
 router.use(postRouter);
 router.use(commentRouter);
+router.use(friendRouter);
 
 router.get('/', function(req, res) {
   res.json({message: ' access http://localhost:3001/api/<route>'});

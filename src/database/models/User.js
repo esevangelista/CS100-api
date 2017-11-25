@@ -11,7 +11,8 @@ const userSchema = new Schema({
   friends: { type: Array, default: [] },
   requests: { type: Array, default: [] },
   likedPosts : { type: Array, default: [] },
-  likedComments : { type: Array, default: [] }
+  likedComments : { type: Array, default: [] },
+
 });
 
 mongoose.model('User', userSchema);
