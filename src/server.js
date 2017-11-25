@@ -8,8 +8,7 @@ import DB from './database/index';
 import path from 'path';
 import cookieParser from 'cookie-parser'
 const app = express();
-const port = process.env.PORT || 3001;
-
+const port = 3001;
 // body parsing
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));

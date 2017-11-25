@@ -5,7 +5,7 @@ import fs from 'fs';
 import mv from 'mv';
 
 const Post = mongoose.model('Post');
-
+const likedPosts = [];
 
 export const getAllPost = () => {
   return new Promise((resolve, reject) => {
@@ -75,6 +75,17 @@ export const attachImage = (filename,folder, {image} ) => {
     });
   })
 }
+
+
+export const checkAction = ({ _id }, {action}) => {
+  return new Promise((resolve,reject) => {
+    if(likedPosts.indexOf(_id) === -1 && action === 'UNLIKE') return reject(409);
+    else if(likedPosts.indexOf(_id) !== -1 && action === 'LIKE') return reject(409);
+    return resolve();
+
+  });
+}
+
 
 export const createPost = (author,{ uuid, content, imgurl}) => {
   return new Promise((resolve, reject) => {
