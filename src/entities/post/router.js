@@ -77,8 +77,10 @@ router.get('/post/:Cid/:_id', async (req, res) => {
 router.put('/post/:_id', async (req,res) => {
     try{
       const likes = (await Ctrl.getPost(req.params)).likeCount;
-      await Ctrl.checkAction(req.params,req.body);
+      const user = req.session.user._id
+      await Ctrl.checkAction(req.params,req.body,user);
       await Ctrl.likePost(req.params,req.body,likes);
+      await Ctrl.updateLikedPost(req.params,req.body,{user});
       const post = await Ctrl.getPost(req.params);
       res.status(200).json({
          status: 200,
@@ -130,7 +132,6 @@ router.post('/post', async (req, res) => {
 
     var _id;
     req.body.uuid = shortid.generate();
-    console.log(req.file)
     if (req.files) req.body.imgurl = await Ctrl.attachImage(req.body.uuid,'/images/',req.files);
     
     const _id = await Ctrl.createPost(req.session.user._id,req.body);

@@ -5,7 +5,7 @@ import fs from 'fs';
 import mv from 'mv';
 
 const Post = mongoose.model('Post');
-const likedPosts = [];
+const User = mongoose.model('User');
 
 export const getAllPost = () => {
   return new Promise((resolve, reject) => {
@@ -77,15 +77,43 @@ export const attachImage = (filename,folder, {image} ) => {
 }
 
 
-export const checkAction = ({ _id }, {action}) => {
+export const checkAction = ({ _id }, {action},  id ) => {
   return new Promise((resolve,reject) => {
-    if(likedPosts.indexOf(_id) === -1 && action === 'UNLIKE') return reject(409);
-    else if(likedPosts.indexOf(_id) !== -1 && action === 'LIKE') return reject(409);
-    return resolve();
+    User.findOne({ $and : [{'_id' : id},{ "likedPosts" : {$in : [ _id ]}}]}, (err,result) => {
+      if(err) return reject(500);
+      else{
+        if(!result && action === 'UNLIKE') return reject(409);
+        else if (result && action === 'LIKE') return reject(409);
+        return resolve();
+      }
 
+    });
   });
 }
 
+export const likePost = ({ _id },{ action },prevLikes) => {
+  return new Promise((resolve,reject) => {
+    const likes = action === 'LIKE'? prevLikes += 1 : prevLikes -= 1;
+    Post.update( 
+      { _id: _id},
+      { $set : { likeCount: likes }},
+      (err,result) => {
+        if (err) return reject(500);
+        return resolve();
+    });
+  });
+};
+
+export const updateLikedPost = ({ _id}, {action} , {user}) => {
+  return new Promise((resolve,reject) => {
+    User.update({ "_id" : user },action === 'LIKE' ?  {  $addToSet: {likedPosts: _id } } : {$pull : {likedPosts : _id}} ,
+        (err,result) => {
+          console.log(result);
+      if(err) reject(500);
+      return resolve();
+    });
+  });
+}
 
 export const createPost = (author,{ uuid, content, imgurl}) => {
   return new Promise((resolve, reject) => {
@@ -107,17 +135,5 @@ export const createPost = (author,{ uuid, content, imgurl}) => {
   })  
 };
 
-export const likePost = ({ _id },{ action },prevLikes) => {
-  return new Promise((resolve,reject) => {
-    const likes = action === 'LIKE'? prevLikes += 1 : prevLikes -= 1;
-    Post.update( 
-      { _id: _id},
-      { $set : { likeCount: likes }},
-      (err,result) => {
-        if(err) return reject(500);
-        action === 'LIKE'? likedPosts.push(_id): likedPosts.splice(likedPosts.indexOf(_id),1);
-        return resolve();
-   
-    });
-  });
-};
+
+

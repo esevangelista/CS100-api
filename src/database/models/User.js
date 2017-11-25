@@ -9,7 +9,9 @@ const userSchema = new Schema({
   imageUrl: {type: String, default: ''},
   imagePath: {type: String, default: ''},
   friends: { type: Array, default: [] },
-  requests: { type: Array, default: [] }
+  requests: { type: Array, default: [] },
+  likedPosts : { type: Array, default: [] },
+  likedComments : { type: Array, default: [] }
 });
 
 mongoose.model('User', userSchema);

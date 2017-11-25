@@ -48,7 +48,6 @@ export const likeComment = ({ Pid, _id },{ action },prevLikes) => {
       { _id: Pid, comments : { $elemMatch : {'_id':_id}}},
       { $set : { "comments.$.likeCount": likes }},
       (err,result) => {
-        console.log(result);
         if(err) return reject(500);
         action === 'LIKE'? likedComments.push(_id): likedComments.splice(likedComments.indexOf(_id),1);
         console.log(likedComments)
