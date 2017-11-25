@@ -9,14 +9,13 @@ import fs from 'fs';
 const User = mongoose.model('User');
 const salt = bcrypt.genSaltSync(10);
 
-export const getAllUsers = () => {
+export const getAllUsers = ({page}) => {
   return new Promise((resolve, reject) => {
-    User.find({}, (err,results) => {
+    User.paginate({}, { offset: page, limit: 10 },(err,results) =>{
       if(err) return reject(500);
       else if(results.length === 0) return reject(404);
       else return resolve(results);
-    });
-    
+    })
   });
 }
 export const getUser = ({ _id }) => {

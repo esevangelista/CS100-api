@@ -7,9 +7,9 @@ const router = Router();
 
 router.use(fileupload()); // express-fileupload
 
-router.get('/post', async (req,res) => {
+router.get('/post/:page', async (req,res) => {
   try {
-    const posts = await Ctrl.getAllPost();
+    const posts = await Ctrl.getAllPost(req.params);
     res.status(200).json({
       status: 200,
       message: 'Successfully fetched posts',
@@ -29,7 +29,7 @@ router.get('/post', async (req,res) => {
   }
 });
 
-router.get('/post/:Cid', async (req, res) => {
+router.get('/post/:Cid/:page', async (req, res) => {
   try {
     const posts = await Ctrl.getAllPostofUser(req.params);
     res.status(200).json({

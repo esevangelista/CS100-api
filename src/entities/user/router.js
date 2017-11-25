@@ -4,9 +4,9 @@ import  * as Ctrl from './controller';
 const router = Router();
 
 //get all users
-router.get('/user', async (req,res) => {
+router.get('/users/:page', async (req,res) => {
   try {
-    const users = await Ctrl.getAllUsers();
+    const users = await Ctrl.getAllUsers(req.params);
     res.status(200).json({
       status: 200,
       message: 'Successfully fetched users',
