@@ -54,9 +54,9 @@ router.delete('/comment/:Pid/:_id', async (req, res) => {
 
 router.put('/comment/:Pid/:_id', async (req,res) => {
     try{
-      const likes = (await Ctrl.getPost(req.params)).likeCount;
-      const user = req.session.user._id
-      await Ctrl.checkAction(req.params,req.body,user);
+      const user = req.session.user._id;
+      const likes = (await Ctrl.getComment(req.params)).likeCount;
+      await Ctrl.checkAction(req.params,req.body,req.session.user._id);
       await Ctrl.likeComment(req.params,req.body,likes);
       await Ctrl.updateLikedComment(req.params,req.body,{user});
       const comment = await Ctrl.getComment(req.params);

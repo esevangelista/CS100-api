@@ -5,8 +5,7 @@ import fs from 'fs';
 import mv from 'mv';
 
 const Post = mongoose.model('Post');
-const likedComments = [];
-
+const User = mongoose.model('User');
 export const getComment = ( { Pid, _id} ) => {
   return new Promise((resolve, reject) =>{
     Post.findOne( 
@@ -32,16 +31,20 @@ export const deleteComment = ({ Pid , _id}) =>{
   });
 }
 
-export const checkAction = ({ _id }, {action}) => {
+export const checkAction = ({ Pid,_id }, {action},  id ) => {
   return new Promise((resolve,reject) => {
-    if(likedComments.indexOf(_id) === -1 && action === 'UNLIKE') return reject(409);
-    else if(likedComments.indexOf(_id) !== -1 && action === 'LIKE') return reject(409);
-    return resolve();
-
+    User.findOne({ $and : [{'_id' : id},{ "likedComments" : {$in : [ _id ]}}]}, (err,result) => {
+      if(err) return reject(500);
+      else{
+        if(!result && action === 'UNLIKE') return reject(409);
+        else if (result && action === 'LIKE') return reject(409);
+        return resolve();
+      }
+    });
   });
 }
 
-export const likeComment = ({ Pid, _id },{ action },prevLikes) => {
+export const likeComment = ({ Pid, _id },{ action }, prevLikes) => {
   return new Promise((resolve,reject) => {
     const likes = action === 'LIKE'? prevLikes+=1:prevLikes-=1;
     Post.update( 
@@ -49,14 +52,22 @@ export const likeComment = ({ Pid, _id },{ action },prevLikes) => {
       { $set : { "comments.$.likeCount": likes }},
       (err,result) => {
         if(err) return reject(500);
-        action === 'LIKE'? likedComments.push(_id): likedComments.splice(likedComments.indexOf(_id),1);
-        console.log(likedComments)
         return resolve();
    
     });
   });
 };
 
+export const updateLikedComment = ({ Pid, _id}, {action} , {user}) => {
+  return new Promise((resolve,reject) => {
+    User.update({ "_id" : user },action === 'LIKE' ?  {  $addToSet: {likedComments: _id } } : {$pull : {likedComments : _id}} ,
+        (err,result) => {
+          console.log(result);
+      if(err) reject(500);
+      return resolve();
+    });
+  });
+}
 export const createComment = (author,{uuid, content}, {Pid}) => {
   return new Promise((resolve, reject) => {
     const embed = 
