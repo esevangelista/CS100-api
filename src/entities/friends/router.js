@@ -5,11 +5,15 @@ const router = Router();
 router.get('/friend/', async (req, res) => {
   try {
     const friends = req.session.user.friends;
-
+    var friendObj= [];
+    for(var i = 0;i < friends.length;i++){
+      let _id = friends[i];
+      friendObj.push(await Util.getUser({_id}));
+    }
     res.status(200).json({
       status: 200,
       message: 'Successfully fetched friends of user',
-      data: friends
+      data: friendObj
     });
   } catch (status) {
     let message = '';

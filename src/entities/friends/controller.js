@@ -37,7 +37,7 @@ export const acceptRequest = ( self, {_id}) => {
         (err,result) => {
       if(err) reject(500);
     });  
-     User.update({ "_id" : _id },{$addToSet: {friends: _id}},
+     User.update({ "_id" : _id },{$addToSet: {friends: self}},
         (err,result) => {
       if(err) reject(500);
     });  

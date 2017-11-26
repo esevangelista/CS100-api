@@ -2,7 +2,6 @@ import  mongoose from 'mongoose';
 const Schema = mongoose.Schema;
 
 const postSchema = new Schema({
-  uuid: {type: String, default:'' },
   author: { type: String, default: '' },
   content: { type: String, default: '' },
   timestamp: { type: Date, default: Date.now },
