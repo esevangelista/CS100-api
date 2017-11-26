@@ -19,7 +19,8 @@ export const checkEmail = ( email ) => {
 }
 
 export const uploadPhoto = ({email}, folder, {image} ) => {
-    const filename = email + '-' + image;
+  console.log(image.name)
+    const filename = email + '-' + image.name;
     const imgurl = folder + filename;
     const Path = __dirname + folder + filename ;
     const file ={
@@ -33,8 +34,8 @@ export const uploadPhoto = ({email}, folder, {image} ) => {
     return file;
 }
 
-export const createUser = ({ name, email , password, about, imageUrl}) => {
-  const file = uploadPhoto({ email }, '/profile-picture/', {imageUrl});
+export const createUser = ({ name, email , password, about}) => {
+  //const file = uploadPhoto({ email }, '/profile-picture/', {image});
   return new Promise((resolve, reject) => {
 
     bcrypt.hash(password, salt, function(err, hash) {  
@@ -42,9 +43,9 @@ export const createUser = ({ name, email , password, about, imageUrl}) => {
         name: name,
         email: email,
         about: about,
-        password: hash,
-        imageUrl : file.imgurl,
-        imagePath : file.Path
+        password: hash
+        //imageUrl : file.imgurl,
+        //imagePath : file.Path
       }
 
       const newUser = new User(user);
