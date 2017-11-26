@@ -6,6 +6,8 @@ import mv from 'mv';
 
 const Post = mongoose.model('Post');
 const User = mongoose.model('User');
+
+
 export const getComment = ( { Pid, _id} ) => {
   return new Promise((resolve, reject) =>{
     Post.findOne( 

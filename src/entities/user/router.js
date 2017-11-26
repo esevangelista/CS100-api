@@ -4,7 +4,7 @@ import  * as Ctrl from './controller';
 const router = Router();
 
 //get all users
-router.get('/users/:page', async (req,res) => {
+router.get('/user', async (req,res) => {     
   try {
     const users = await Ctrl.getAllUsers(req.params);
     res.status(200).json({
