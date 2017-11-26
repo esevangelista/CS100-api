@@ -77,4 +77,31 @@ export const updateUser = ({ _id },{ name, email, password, about}) => {
   });
 }
 
+export const updatePW = ({ _id },{ password }) => {
+  return new Promise((resolve, reject) => {  
+    bcrypt.hash(password, salt, function(err, hash) {
+      User.update({ _id },{$set : { password : hash}},(err, results) => {
+          if(err) return reject(500);
+          else return resolve();
+      });
+    })  
+  });
+}
+
+export const verify = ({_id },{password}) => {
+
+  return new Promise((resolve, reject) => {
+
+    User.findOne({_id}, (err,result) => {
+      if(err) return reject(500);
+      else if(!result) return reject(422);
+      bcrypt.compare(password, result.password, (error, isMatch) =>{
+          if(error) return reject(500);
+          else if (!isMatch) return reject(422);
+          return resolve();
+      });
+      
+    });
+  });
+}
 

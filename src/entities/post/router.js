@@ -154,7 +154,6 @@ router.post('/post', async (req, res) => {
 
     var _id;
     req.body.uuid = shortid.generate();
-    if (req.files) req.body.imgurl = await Ctrl.attachImage(req.body.uuid,'/images/',req.files);
     
     const _id = await Ctrl.createPost(req.session.user._id,req.body);
     const post = await Ctrl.getPost({ _id });

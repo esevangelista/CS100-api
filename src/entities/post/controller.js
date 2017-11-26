@@ -115,7 +115,7 @@ export const updateLikedPost = ({ _id}, {action} , {user}) => {
   });
 }
 
-export const createPost = (author,{ uuid, content, imgurl}) => {
+export const createPost = (author,{ uuid, content}) => {
   return new Promise((resolve, reject) => {
     const post = {
       uuid: uuid,
@@ -124,7 +124,6 @@ export const createPost = (author,{ uuid, content, imgurl}) => {
       timestamp: new Date(),
       likeCount: 0,
       comments: [],
-      imageUrl: imgurl
     }
 
     const newPost = new Post(post);
