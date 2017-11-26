@@ -115,10 +115,11 @@ export const updateLikedPost = ({ _id}, {action} , {user}) => {
   });
 }
 
-export const createPost = (author,{content}) => {
+export const createPost = (author,{content, authorName}) => {
   return new Promise((resolve, reject) => {
     const post = {
       author: author,
+      authorName: authorName,
       content: content,
       timestamp: new Date(),
       likeCount: 0,

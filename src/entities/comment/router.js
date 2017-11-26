@@ -1,6 +1,7 @@
 import { Router } from 'express';
 import  * as Ctrl from './controller';
 import * as Util from './../user/controller';
+import * as postUtil from './../post/controller';
 import fileupload from 'express-fileupload';
 import shortid from 'shortid';
 
@@ -55,8 +56,9 @@ router.delete('/comment/:Pid/:_id', async (req, res) => {
 router.put('/comment/:Pid/:_id', async (req,res) => {
     try{
       const user = req.session.user._id;
+      req.body.authorName = req.session.user.name;
       const likes = (await Ctrl.getComment(req.params)).likeCount;
-      await Ctrl.checkAction(req.params,req.body,req.session.user._id);
+      await Ctrl.checkAction(req.params,req.body,user);
       await Ctrl.likeComment(req.params,req.body,likes);
       await Ctrl.updateLikedComment(req.params,req.body,{user});
       const comment = await Ctrl.getComment(req.params);
@@ -86,14 +88,14 @@ router.put('/comment/:Pid/:_id', async (req,res) => {
 router.post('/comment/:Pid', async (req, res) => {
   try{
     const self = req.session.user._id;
-    const _id = await Ctrl.createComment(self,req.body,req.params);
-    req.params._id = _id;
-    const comment = await Ctrl.getComment(req.params);
-
+    req.body.authorName = req.session.user.name;
+    await Ctrl.createComment(self,req.body,req.params);
+    const _id = req.params.Pid
+    const post = await postUtil.getPost({_id});
     res.status(200).json({
        status: 200,
        message: 'Successfully created comment',
-       data: comment
+       data: post
     });
 
   } catch (status) {

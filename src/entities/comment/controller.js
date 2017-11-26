@@ -70,7 +70,7 @@ export const updateLikedComment = ({ Pid, _id}, {action} , {user}) => {
     });
   });
 }
-export const createComment = (author,{content}, {Pid}) => {
+export const createComment = (author,{content,authorName}, {Pid}) => {
   return new Promise((resolve, reject) => {
     const embed = 
       {$push:
@@ -78,6 +78,7 @@ export const createComment = (author,{content}, {Pid}) => {
           comments: 
             {
               author: author,
+              authorName: authorName,
               content: content,
               timestamp: new Date(),
               likeCount:0
@@ -87,7 +88,7 @@ export const createComment = (author,{content}, {Pid}) => {
 
     Post.update( { "_id" : Pid} , embed ,(err, result) => {
       if(err) return reject(500);
-      else return resolve(result._id);
+      else return resolve();
    });
   })  
 };
