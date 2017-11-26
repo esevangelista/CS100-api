@@ -9,7 +9,7 @@ const User = mongoose.model('User');
 
 export const getAllPost = () => {
   return new Promise((resolve, reject) => {
-    Post.find({}, (err,results) => {   
+    Post.find({$query:{}, $orderby : {timestamp : 1}}, (err,results) => {   
       if(err) return reject(500);
       else if(results.length === 0) return reject(404);
       else return resolve(results);
@@ -20,7 +20,7 @@ export const getAllPost = () => {
 
 export const getAllPostofUser = ({ Cid }) => {
   return new Promise((resolve, reject) => {
-    Post.find({ author : Cid }, (err,results) => {   
+    Post.find({$query: { author : Cid }, $orderby : {timestamp : 1}}, (err,results) => {   
       if(err) return reject(500);
       else if(results.length === 0) return reject(404);
       else return resolve(results);
