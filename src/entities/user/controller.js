@@ -58,18 +58,15 @@ export const unlinkImage = ({ _id }) => {
 
 };
 
-export const updateUser = ({ _id },{ name, email, password, about}, { image }) => {
+export const updateUser = ({ _id },{ name, email, password, about}) => {
   return new Promise((resolve, reject) => {  
-    unlinkImage({_id});
-    const file = Util.uploadPhoto({email}, '/profile-picture/', {image});
     bcrypt.hash(password, salt, function(err, hash) {
        const user = {
         name: name,
         email: email,
         about: about,
-        password: hash,
-        imageUrl : file.imgurl,
-        imagePath : file.Path
+        password: hash
+        
       }
       const newUser = new User(user);
       User.update({ _id },user,(err, results) => {
