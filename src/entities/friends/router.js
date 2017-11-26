@@ -28,12 +28,11 @@ router.get('/friend/', async (req, res) => {
 router.get('/friendCount/',async (req,res) => {
   try {
     const _id = req.session.user._id
-    const friends = await Util.getUser(_id);
-
+    const user = await Util.getUser({_id});
     res.status(200).json({
       status: 200,
       message: 'Successfully fetched number of friends user has ',
-      data: friends? friends.length : 0
+      data: user.friends.length
     });
   } catch (status) {
     let message = '';
