@@ -121,27 +121,6 @@ router.put('/user', async (req, res) => {
   }
 });
 
-router.put('/user', async (req, res) => {
-  try {
-    const _id = req.session.user._id;
-    await Ctrl.updatePW({_id},req.body);
-    res.status(200).json({
-      status: 200,
-      message: 'Successfully updated password'
-    });
-  } catch (status) {
-    let message = '';
-    switch (status) {
-      case 500:
-        message = 'Internal server error while logging in';
-        break;
-      case 422:
-        message = 'Unprocessable Entity';
-        break;
-    }
-    res.status(status).json({ status, message });
-  }
-});
 
 router.put('/verify', async (req, res) => {
   try {
