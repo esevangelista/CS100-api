@@ -36,7 +36,6 @@ app.use(
 
 app.use('/api', routes);
 app.use('/profile-picture',express.static(path.join(__dirname, './entities/signup/profile-picture')));
-app.use('/post-images',express.static(path.join(__dirname, './entities/post/images')));
 
 const server = app.listen(port, (err) => {
   if (err) console.log(err);
