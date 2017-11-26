@@ -52,8 +52,8 @@ router.get('/post/:Cid', async (req, res) => {
 
 router.get('/postCount', async (req, res) => {
   try {
-    const _id = req.session.user._id;
-    const posts = await Ctrl.getAllPostofUser({_id});
+    const Cid = req.session.user._id;
+    const posts = await Ctrl.getAllPostofUser({Cid});
     res.status(200).json({
       status: 200,
       message: 'Successfully fetched number of posts user have',
@@ -153,9 +153,8 @@ router.post('/post', async (req, res) => {
   try{
 
     var _id;
-    req.body.uuid = shortid.generate();
-    
-    const _id = await Ctrl.createPost(req.session.user._id,req.body);
+    const self = req.session.user._id;
+    const _id = await Ctrl.createPost(self,req.body);
     const post = await Ctrl.getPost({ _id });
 
     res.status(200).json({
