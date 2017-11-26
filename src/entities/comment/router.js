@@ -85,9 +85,8 @@ router.put('/comment/:Pid/:_id', async (req,res) => {
 
 router.post('/comment/:Pid', async (req, res) => {
   try{
-
-    req.body.uuid = shortid.generate();
-    const _id = await Ctrl.createComment(req.session.user._id,req.body,req.params);
+    const self = req.session.user._id;
+    const _id = await Ctrl.createComment(self,req.body,req.params);
     req.params._id = _id;
     const comment = await Ctrl.getComment(req.params);
 

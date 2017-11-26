@@ -70,14 +70,13 @@ export const updateLikedComment = ({ Pid, _id}, {action} , {user}) => {
     });
   });
 }
-export const createComment = (author,{uuid, content}, {Pid}) => {
+export const createComment = (author,{content}, {Pid}) => {
   return new Promise((resolve, reject) => {
     const embed = 
       {$push:
         {
           comments: 
             {
-              _id: uuid,
               author: author,
               content: content,
               timestamp: new Date(),
@@ -88,7 +87,7 @@ export const createComment = (author,{uuid, content}, {Pid}) => {
 
     Post.update( { "_id" : Pid} , embed ,(err, result) => {
       if(err) return reject(500);
-      else return resolve(uuid);
+      else return resolve(result._id);
    });
   })  
 };
