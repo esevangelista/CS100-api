@@ -33,7 +33,7 @@ router.get('/friendCount/',async (req,res) => {
     res.status(200).json({
       status: 200,
       message: 'Successfully fetched number of friends user has ',
-      data: friends.length
+      data: friends? friends.length : 0
     });
   } catch (status) {
     let message = '';
