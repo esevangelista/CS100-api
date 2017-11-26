@@ -96,10 +96,11 @@ router.get('/user/search/:name', async (req, res) => {
 });
 
 
-router.put('/user/:_id', async (req, res) => {
+router.put('/user', async (req, res) => {
   try{
-    const _id = await Ctrl.updateUser(req.params, req.body);
-    const user = await Ctrl.getUser(req.params);
+    const self = req.session.user._id
+    const _id = await Ctrl.updateUser(self, req.body);
+    const user = await Ctrl.getUser(self);
     res.status(200).json({
        status: 200,
        message: 'Successfully updated user',
