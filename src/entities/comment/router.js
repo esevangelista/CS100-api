@@ -89,6 +89,7 @@ router.post('/comment/:Pid', async (req, res) => {
   try{
     const self = req.session.user._id;
     req.body.authorName = req.session.user.name;
+    req.body.authorImg = req.session.user.imageUrl;
     await Ctrl.createComment(self,req.body,req.params);
     const _id = req.params.Pid
     const post = await postUtil.getPost({_id});
