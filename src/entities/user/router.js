@@ -146,7 +146,7 @@ router.put('/user', async (req, res) => {
 router.put('/verify', async (req, res) => {
   try {
     const _id = req.session.user._id;
-    await Ctrl.verify(_id,req.body);
+    await Ctrl.verify({_id},req.body); 
     res.status(200).json({
       status: 200,
       message: 'Successfully verified user'
