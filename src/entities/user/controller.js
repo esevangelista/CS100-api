@@ -20,7 +20,7 @@ export const getAllUsers = ({page}) => {
 }
 export const getUser = ({ _id }) => {
   return new Promise((resolve, reject) =>{
-    User.findOne({ _id }, (err,result) => {
+    User.findOne(_id, (err,result) => {
       if(err) return reject(500);
       else return resolve(result);
 
@@ -57,7 +57,6 @@ export const unlinkImage = ({ _id }) => {
   });  
 
 };
-
 export const updateUser = ({ _id },{ name, email, password, about}) => { 
   return new Promise((resolve, reject) => {  
     bcrypt.hash(password, salt, function(err, hash) {
@@ -69,7 +68,7 @@ export const updateUser = ({ _id },{ name, email, password, about}) => {
         
       }
       const newUser = new User(user);
-      User.update({ _id },user,(err, results) => {
+      User.update(_id,user,(err, results) => {
           if(err) return reject(500);
           else return resolve();
       });

@@ -101,7 +101,8 @@ router.put('/user', async (req, res) => {
   try{
     const self = req.session.user._id
     const user_id = await Ctrl.updateUser(self, req.body);
-    const user = await Ctrl.getUser(self);
+    const user = await Ctrl.getUser({self});
+    console.log("USER: ", user);
     res.status(200).json({
        status: 200,
        message: 'Successfully updated user',
