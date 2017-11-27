@@ -58,7 +58,7 @@ export const unlinkImage = ({ _id }) => {
 
 };
 
-export const updateUser = ({ _id },{ name, email, password, about}) => {
+export const updateUser = ({ _id },{ name, email, password, about}) => { 
   return new Promise((resolve, reject) => {  
     bcrypt.hash(password, salt, function(err, hash) {
        const user = {
@@ -73,7 +73,7 @@ export const updateUser = ({ _id },{ name, email, password, about}) => {
           if(err) return reject(500);
           else return resolve();
       });
-    })  
+    })
   });
 }
 
